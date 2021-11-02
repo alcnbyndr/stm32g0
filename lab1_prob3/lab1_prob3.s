@@ -129,7 +129,6 @@ main:
 	bics r5, r5, r4		// !!-WARNING-!! this line might not work
 	str r5, [r6]
 
-loop:
 	/* turn on led connected to B1 in ODR */
 	ldr r6, = GPIOB_ODR
 	ldr r5, [r6]
@@ -138,25 +137,3 @@ loop:
 	orrs r5, r5, r4	// because we need to active 1st pin of A port
 	str r5, [r6]	// when this line is processed the LED should be on because;
 	// we now write 1 to the related register of PB1
-
-	ldr r1, = #2000000
-	bl delay
-
-	ldr r6, = GPIOB_ODR
-	ldr r5, [r6]
-	movs r4, #1
-	lsls r4, r4, #1 // giving xxx00000001 to register 4
-	bics r5, r5, r4	// because we need to deactivate 1st pin of A port
-	str r5, [r6]	// when this line is processed the LED should be on because;
-	// we now write 0 to the related register of PB1
-
-	ldr r1, =#2000000
-	bl delay
-
-	b loop
-	pop {pc}
-
-delay:
-	subs r1, r1, #1
-	bne delay
-	bx lr
